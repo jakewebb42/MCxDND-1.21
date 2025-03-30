@@ -48,6 +48,11 @@ public class MCxDND {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModItems.D20);
+            event.accept(ModItems.D12);
+            event.accept(ModItems.D10);
+            event.accept(ModItems.D8);
+            event.accept(ModItems.D6);
+            event.accept(ModItems.D4);
         }
     }
 

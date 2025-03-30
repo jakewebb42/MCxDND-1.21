@@ -12,6 +12,11 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, MCxDND.MOD_ID);
 
     public static final RegistryObject<Item> D20 = ITEMS.register("d20", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> D12 = ITEMS.register("d12", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> D10 = ITEMS.register("d10", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> D8 = ITEMS.register("d8", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> D6 = ITEMS.register("d6", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> D4 = ITEMS.register("d4", () -> new Item(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
