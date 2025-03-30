@@ -43,16 +43,28 @@ public class D20Item extends Item {
         Minecraft minecraft = Minecraft.getInstance();
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         BlockPos playerPos = new BlockPos((int)pPlayer.getX(), (int)pPlayer.getY(), (int)pPlayer.getZ());
+        String subtitleString;
 
         // Roll
         int roll = (int)(Math.random()*20 + 1);
         String rollString = String.valueOf(roll);
 
+        // Subtitle
+        if (roll == 1) {
+            subtitleString = "CRITICAL FAILURE";
+        }
+        else if (roll == 20) {
+            subtitleString = "CRITICAL SUCCESS";
+        }
+        else {
+            subtitleString = "";
+        }
+
         // Output Roll
         if (!pLevel.isClientSide) {
             minecraft.gui.setTitle(Component.literal(rollString));
+            minecraft.gui.setSubtitle(Component.literal(subtitleString));
             pLevel.playSound(null, playerPos, SoundEvents.FIREWORK_ROCKET_SHOOT, SoundSource.BLOCKS);
-            //pPlayer.displayClientMessage(Component.literal(rollString), true);
         }
 
         return InteractionResultHolder.sidedSuccess(pPlayer.getItemInHand(pHand), pLevel.isClientSide());
