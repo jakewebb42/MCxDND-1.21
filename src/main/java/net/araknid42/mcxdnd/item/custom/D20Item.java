@@ -26,6 +26,7 @@ public class D20Item extends Item {
         super(pProperties);
     }
 
+
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
         Level level = pContext.getLevel();
@@ -35,7 +36,7 @@ public class D20Item extends Item {
             if(!level.isClientSide()) {
                 level.setBlockAndUpdate(pContext.getClickedPos(), D20_MAP.get(clickedBlock).defaultBlockState());
 
-                pContext.getItemInHand().hurtAndBreak(1, ((ServerLevel) level), ((ServerPlayer) pContext.getPlayer()),
+                pContext.getItemInHand().hurtAndBreak(0, ((ServerLevel) level), ((ServerPlayer) pContext.getPlayer()),
                         item -> pContext.getPlayer().onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
 
                 level.playSound(null,pContext.getClickedPos(), SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS);

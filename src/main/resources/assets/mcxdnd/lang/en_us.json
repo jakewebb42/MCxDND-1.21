@@ -6,6 +6,11 @@
   "item.mcxdnd.d6": "D6",
   "item.mcxdnd.d4": "D4",
 
+  "item.mcxdnd.dagger": "Dagger",
+
+  "item.mcxdnd.spellbook": "Spellbook",
+
   "creativetab.mcxdnd.dice": "Dice",
-  "creativetab.mcxdnd.weapons": "DND Weapons"
+  "creativetab.mcxdnd.weapons": "DND Weapons",
+  "creativetab.mcxdnd.spells": "Spells"
 }
