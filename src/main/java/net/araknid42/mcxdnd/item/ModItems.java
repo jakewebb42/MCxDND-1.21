@@ -1,6 +1,7 @@
 package net.araknid42.mcxdnd.item;
 
 import net.araknid42.mcxdnd.MCxDND;
+import net.araknid42.mcxdnd.item.custom.D20Item;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -11,7 +12,7 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, MCxDND.MOD_ID);
 
-    public static final RegistryObject<Item> D20 = ITEMS.register("d20", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> D20 = ITEMS.register("d20", () -> new D20Item(new Item.Properties().durability(32)));
     public static final RegistryObject<Item> D12 = ITEMS.register("d12", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> D10 = ITEMS.register("d10", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> D8 = ITEMS.register("d8", () -> new Item(new Item.Properties()));
