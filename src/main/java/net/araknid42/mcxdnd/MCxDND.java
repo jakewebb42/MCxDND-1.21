@@ -1,6 +1,7 @@
 package net.araknid42.mcxdnd;
 
 import com.mojang.logging.LogUtils;
+import net.araknid42.mcxdnd.item.ModCreativeModeTabs;
 import net.araknid42.mcxdnd.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,6 +33,8 @@ public class MCxDND {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
+        ModCreativeModeTabs.register(modEventBus);
+
         ModItems.register(modEventBus);
 
         // Register the item to a creative tab
@@ -46,14 +49,7 @@ public class MCxDND {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(ModItems.D20);
-            event.accept(ModItems.D12);
-            event.accept(ModItems.D10);
-            event.accept(ModItems.D8);
-            event.accept(ModItems.D6);
-            event.accept(ModItems.D4);
-        }
+
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
