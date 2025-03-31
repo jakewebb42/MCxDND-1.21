@@ -5,9 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -20,11 +18,14 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.mcxdnd.dice"))
                     .displayItems((itemDisplayParameters, output) ->{
                         output.accept(ModItems.D20.get());
+                        output.accept(ModItems.D_ADVANTAGE.get());
+                        output.accept(ModItems.D_DISADVANTAGE.get());
                         output.accept(ModItems.D12.get());
                         output.accept(ModItems.D10.get());
                         output.accept(ModItems.D8.get());
                         output.accept(ModItems.D6.get());
                         output.accept(ModItems.D4.get());
+
 
                     }).build());
 
