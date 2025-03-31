@@ -14,7 +14,7 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class DisadvantageDieItem extends BowItem {
+public class DisadvantageDieItem extends DieItem {
 
     // Constructor
     public DisadvantageDieItem(Properties pProperties) {

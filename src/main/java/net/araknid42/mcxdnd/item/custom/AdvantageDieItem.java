@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 
-public class AdvantageDieItem extends BowItem {
+public class AdvantageDieItem extends DieItem {
 
     // Constructor
     public AdvantageDieItem(Properties pProperties) {

@@ -26,7 +26,6 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.D6.get());
                         output.accept(ModItems.D4.get());
 
-
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> DND_WEAPONS_TAB = CREATIVE_MODE_TABS.register("dnd_weapons_tab",
