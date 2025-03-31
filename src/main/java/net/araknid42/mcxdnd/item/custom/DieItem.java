@@ -1,36 +1,94 @@
 package net.araknid42.mcxdnd.item.custom;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.araknid42.mcxdnd.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-
-import java.util.List;
-import java.util.Optional;
 
 public class DieItem extends BowItem {
 
+    // Constructor
     public DieItem(Properties pProperties) {
         super(pProperties);
     }
+
+    /* Custom variables */
     public static int NUM_SIDES;
+    public static int MODIFIER = 0;
+    public static SoundEvent END_SOUND = SoundEvents.DRAGON_FIREBALL_EXPLODE;
+    public static SoundEvent ROLL_SOUND = SoundEvents.EXPERIENCE_ORB_PICKUP;
+
+    /* Custom Functions */
+    // Set Functions
+    private void setNumSides(ItemStack pStack) {
+        if (pStack.is(ModItems.D20.get())){
+            DieItem.NUM_SIDES = 20;
+        }
+        else if (pStack.is(ModItems.D12.get())) {
+            DieItem.NUM_SIDES = 12;
+        }
+        else if (pStack.is(ModItems.D10.get())) {
+            DieItem.NUM_SIDES = 10;
+        }
+        else if (pStack.is(ModItems.D8.get())) {
+            DieItem.NUM_SIDES = 8;
+        }
+        else if (pStack.is(ModItems.D6.get())) {
+            DieItem.NUM_SIDES = 6;
+        }
+        else if (pStack.is(ModItems.D4.get()) ||
+                pStack.is(ModItems.DAGGER.get())) {
+            DieItem.NUM_SIDES = 4;
+        }
+    }
+
+    // Roll Functions
+    private String rollDieString() {
+        int roll = (int)((Math.random()*DieItem.NUM_SIDES + 1) + DieItem.MODIFIER);
+        return String.valueOf(roll);
+    }
+    private String determineCriticalString(String rollString, ItemStack pStack) {
+        String criticalString = "";
+        String failureString = "CRITICAL FAILURE";
+        String successString = "CRITICAL SUCCESS";
+        String blankString = "";
+
+        // Subtitle
+        if (rollString.equals("1") && (pStack.is(ModItems.D20.get()))) {
+            criticalString = failureString;
+        }
+        else if (rollString.equals("20") && (pStack.is(ModItems.D20.get()))) {
+            criticalString = successString;
+        }
+        else {
+            criticalString = blankString;
+        }
+
+        return criticalString;
+    }
+
+    /* Use Functions */
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
+        // Start using item
+        pPlayer.startUsingItem(pHand);
+
+        // Set numSides
+        ItemStack pStack = pPlayer.getItemInHand(pHand);
+        setNumSides(pStack);
+
+        // Return Success
+        return InteractionResultHolder.sidedSuccess(pPlayer.getItemInHand(pHand), pLevel.isClientSide());
+    }
 
     @Override
     public void onUseTick(Level pLevel, LivingEntity pLivingEntity, ItemStack pStack, int pCount) {
@@ -38,113 +96,46 @@ public class DieItem extends BowItem {
             // Init
             BlockPos playerPos = new BlockPos((int)pLivingEntity.getX(), (int)pLivingEntity.getY(), (int)pLivingEntity.getZ());
             Minecraft minecraft = Minecraft.getInstance();
-            ItemStack itemstack = pLivingEntity.getItemInHand(InteractionHand.MAIN_HAND);
-            String subtitleString = "";
-
-            // Set NUM_SIDES
-            if (pStack.is(ModItems.D20.get())){
-                DieItem.NUM_SIDES = 20;
-            }
-            else if (pStack.is(ModItems.D12.get())) {
-                DieItem.NUM_SIDES = 12;
-            }
-            else if (pStack.is(ModItems.D10.get())) {
-                DieItem.NUM_SIDES = 10;
-            }
-            else if (pStack.is(ModItems.D8.get())) {
-                DieItem.NUM_SIDES = 8;
-            }
-            else if (pStack.is(ModItems.D6.get())) {
-                DieItem.NUM_SIDES = 6;
-            }
-            else if (pStack.is(ModItems.D4.get()) ||
-                    pStack.is(ModItems.DAGGER.get())) {
-                DieItem.NUM_SIDES = 4;
-            }
+            String blankString = ""; // show blank subtitle no matter what
 
             // Roll
-            int roll = (int)(Math.random()* DieItem.NUM_SIDES + 1);
-            String rollString = String.valueOf(roll);
+            String rollString = rollDieString();
 
             // Output Roll
             minecraft.gui.setTimes(0, 50, 50);
             minecraft.gui.setTitle(Component.literal(rollString));
-            minecraft.gui.setSubtitle(Component.literal(subtitleString));
-            pLevel.playSound(null, playerPos, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS);
+            minecraft.gui.setSubtitle(Component.literal(blankString));
+
+            // Output Sound
+            pLevel.playSound(null, playerPos, DieItem.ROLL_SOUND, SoundSource.BLOCKS);
         }
     }
 
     @Override
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
-        if (pEntityLiving != null) {
-            Minecraft minecraft = Minecraft.getInstance();
-            ItemStack itemstack = pEntityLiving.getItemInHand(InteractionHand.MAIN_HAND);
-            BlockPos playerPos = new BlockPos((int)pEntityLiving.getX(), (int)pEntityLiving.getY(), (int)pEntityLiving.getZ());
-            String subtitleString;
+        if ((pEntityLiving != null) && (!pLevel.isClientSide)) {
 
+            // Init Die
+            Minecraft minecraft = Minecraft.getInstance();
+            BlockPos playerPos = new BlockPos((int)pEntityLiving.getX(), (int)pEntityLiving.getY(), (int)pEntityLiving.getZ());
+
+            // Init charge
             int useTime = this.getUseDuration(pStack, pEntityLiving) - pTimeLeft;
             float pullProgress = getPowerForTime(useTime);
 
+            // Charge
             if (pullProgress > 0.45F) {
-                if (!pLevel.isClientSide) {
-                    // do what you want to do
-                    // Set NUM_SIDES
-                    if (pStack.is(ModItems.D20.get())){
-                        DieItem.NUM_SIDES = 20;
-                    }
-                    else if (pStack.is(ModItems.D12.get())) {
-                        DieItem.NUM_SIDES = 12;
-                    }
-                    else if (pStack.is(ModItems.D10.get())) {
-                        DieItem.NUM_SIDES = 10;
-                    }
-                    else if (pStack.is(ModItems.D8.get())) {
-                        DieItem.NUM_SIDES = 8;
-                    }
-                    else if (pStack.is(ModItems.D6.get())) {
-                        DieItem.NUM_SIDES = 6;
-                    }
-                    else if (pStack.is(ModItems.D4.get()) ||
-                            pStack.is(ModItems.DAGGER.get())) {
-                        DieItem.NUM_SIDES = 4;
-                    }
+                // Generate roll and subtitle
+                String rollString = rollDieString();
+                String subtitleString = determineCriticalString(rollString, pStack);
 
-                    // Roll
-                    int roll = (int)(Math.random()* DieItem.NUM_SIDES + 1);
-                    String rollString = String.valueOf(roll);
+                // Output Roll
+                minecraft.gui.setTitle(Component.literal(rollString));
+                minecraft.gui.setSubtitle(Component.literal(subtitleString));
 
-                    // Subtitle
-                    if (roll == 1 && (pStack.is(ModItems.D20.get()))) {
-                        subtitleString = "CRITICAL FAILURE";
-                    }
-                    else if (roll == 20 && (pStack.is(ModItems.D20.get()))) {
-                        subtitleString = "CRITICAL SUCCESS";
-                    }
-                    else {
-                        subtitleString = "";
-                    }
-
-                    // Output Roll
-                    if (!pLevel.isClientSide) {
-                        minecraft.gui.setTitle(Component.literal(rollString));
-                        minecraft.gui.setSubtitle(Component.literal(subtitleString));
-                        pLevel.playSound(null, playerPos, SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundSource.BLOCKS);
-                    }
-                }
+                // Output Sound
+                pLevel.playSound(null, playerPos, DieItem.END_SOUND, SoundSource.BLOCKS);
             }
         }
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
-        // Start using item
-        pPlayer.startUsingItem(pHand);
-
-        // Play sound at playerPos
-        BlockPos playerPos = new BlockPos((int)pPlayer.getX(), (int)pPlayer.getY(), (int)pPlayer.getZ());
-        pLevel.playSound(null, playerPos, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS);
-
-        // Return Success
-        return InteractionResultHolder.sidedSuccess(pPlayer.getItemInHand(pHand), pLevel.isClientSide());
     }
 }
