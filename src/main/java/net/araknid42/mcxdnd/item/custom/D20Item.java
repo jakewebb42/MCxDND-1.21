@@ -1,7 +1,10 @@
 package net.araknid42.mcxdnd.item.custom;
 
+import net.araknid42.mcxdnd.component.ModDataComponentTypes;
+import net.araknid42.mcxdnd.util.ModItemProperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.main.GameConfig;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -30,11 +33,12 @@ import java.util.Map;
 
 public class D20Item extends Item {
 
-    public D20Item(Properties pProperties) {
+    public D20Item(Properties pProperties, int numSides) {
         super(pProperties);
+        D20Item.numSides = numSides;
     }
 
-
+    public static int numSides;
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
@@ -46,7 +50,7 @@ public class D20Item extends Item {
         String subtitleString;
 
         // Roll
-        int roll = (int)(Math.random()*20 + 1);
+        int roll = (int)(Math.random()*D20Item.numSides + 1);
         String rollString = String.valueOf(roll);
 
         // Subtitle
@@ -65,6 +69,8 @@ public class D20Item extends Item {
             minecraft.gui.setTitle(Component.literal(rollString));
             minecraft.gui.setSubtitle(Component.literal(subtitleString));
             pLevel.playSound(null, playerPos, SoundEvents.FIREWORK_ROCKET_SHOOT, SoundSource.BLOCKS);
+
+            //pPlayer.getItemInHand(pHand).set(ModDataComponentTypes.COORDINATES.get(), playerPos);
         }
 
         return InteractionResultHolder.sidedSuccess(pPlayer.getItemInHand(pHand), pLevel.isClientSide());

@@ -1,8 +1,11 @@
 package net.araknid42.mcxdnd;
 
 import com.mojang.logging.LogUtils;
+import net.araknid42.mcxdnd.component.ModDataComponentTypes;
 import net.araknid42.mcxdnd.item.ModCreativeModeTabs;
 import net.araknid42.mcxdnd.item.ModItems;
+import net.araknid42.mcxdnd.util.ModItemProperties;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -37,6 +40,8 @@ public class MCxDND {
 
         ModItems.register(modEventBus);
 
+        ModDataComponentTypes.register(modEventBus);
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
@@ -63,7 +68,7 @@ public class MCxDND {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
+            ModItemProperties.addCustomItemProperties();
         }
     }
 }

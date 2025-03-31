@@ -3,6 +3,7 @@ package net.araknid42.mcxdnd.item;
 import net.araknid42.mcxdnd.MCxDND;
 import net.araknid42.mcxdnd.item.custom.*;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -13,8 +14,8 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, MCxDND.MOD_ID);
 
     /* Dice Tab */
-    public static final RegistryObject<Item> D20 = ITEMS.register("d20", () -> new D20Item(new Item.Properties().durability(1)));
-    public static final RegistryObject<Item> D12 = ITEMS.register("d12", () -> new D12Item(new Item.Properties().durability(1)));
+    public static final RegistryObject<Item> D20 = ITEMS.register("d20", () -> new D20Item(new Item.Properties().durability(1).rarity(Rarity.EPIC), 20));
+    public static final RegistryObject<Item> D12 = ITEMS.register("d12", () -> new D20Item(new Item.Properties().durability(1), 12));
     public static final RegistryObject<Item> D10 = ITEMS.register("d10", () -> new D10Item(new Item.Properties().durability(1)));
     public static final RegistryObject<Item> D8 = ITEMS.register("d8", () -> new D8Item(new Item.Properties().durability(1)));
     public static final RegistryObject<Item> D6 = ITEMS.register("d6", () -> new D6Item(new Item.Properties().durability(1)));
