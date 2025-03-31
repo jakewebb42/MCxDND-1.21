@@ -1,44 +1,24 @@
 package net.araknid42.mcxdnd.item.custom;
 
-import net.araknid42.mcxdnd.component.ModDataComponentTypes;
-import net.araknid42.mcxdnd.util.ModItemProperties;
+import net.araknid42.mcxdnd.item.ModItems;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.main.GameConfig;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentContents;
-import net.minecraft.network.chat.Style;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
-import java.util.List;
-import java.util.Map;
+public class DieItem extends Item {
 
-public class D20Item extends Item {
-
-    public D20Item(Properties pProperties, int numSides) {
+    public DieItem(Properties pProperties) {
         super(pProperties);
-        D20Item.numSides = numSides;
     }
 
-    public static int numSides;
+    public static int NUM_SIDES;
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
@@ -49,15 +29,36 @@ public class D20Item extends Item {
         BlockPos playerPos = new BlockPos((int)pPlayer.getX(), (int)pPlayer.getY(), (int)pPlayer.getZ());
         String subtitleString;
 
+        // Set NUM_SIDES
+        if (itemstack.is(ModItems.D20.get())){
+            DieItem.NUM_SIDES = 20;
+        }
+        else if (itemstack.is(ModItems.D12.get())) {
+            DieItem.NUM_SIDES = 12;
+        }
+        else if (itemstack.is(ModItems.D10.get())) {
+            DieItem.NUM_SIDES = 10;
+        }
+        else if (itemstack.is(ModItems.D8.get())) {
+            DieItem.NUM_SIDES = 8;
+        }
+        else if (itemstack.is(ModItems.D6.get())) {
+            DieItem.NUM_SIDES = 6;
+        }
+        else if (itemstack.is(ModItems.D4.get()) ||
+                itemstack.is(ModItems.DAGGER.get())) {
+            DieItem.NUM_SIDES = 4;
+        }
+
         // Roll
-        int roll = (int)(Math.random()*D20Item.numSides + 1);
+        int roll = (int)(Math.random()* DieItem.NUM_SIDES + 1);
         String rollString = String.valueOf(roll);
 
         // Subtitle
-        if (roll == 1) {
+        if (roll == 1 && (itemstack.is(ModItems.D20.get()))) {
             subtitleString = "CRITICAL FAILURE";
         }
-        else if (roll == 20) {
+        else if (roll == 20 && (itemstack.is(ModItems.D20.get()))) {
             subtitleString = "CRITICAL SUCCESS";
         }
         else {

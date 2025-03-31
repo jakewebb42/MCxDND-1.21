@@ -14,15 +14,15 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, MCxDND.MOD_ID);
 
     /* Dice Tab */
-    public static final RegistryObject<Item> D20 = ITEMS.register("d20", () -> new D20Item(new Item.Properties().durability(1).rarity(Rarity.EPIC), 20));
-    public static final RegistryObject<Item> D12 = ITEMS.register("d12", () -> new D20Item(new Item.Properties().durability(1), 12));
-    public static final RegistryObject<Item> D10 = ITEMS.register("d10", () -> new D10Item(new Item.Properties().durability(1)));
-    public static final RegistryObject<Item> D8 = ITEMS.register("d8", () -> new D8Item(new Item.Properties().durability(1)));
-    public static final RegistryObject<Item> D6 = ITEMS.register("d6", () -> new D6Item(new Item.Properties().durability(1)));
-    public static final RegistryObject<Item> D4 = ITEMS.register("d4", () -> new D4Item(new Item.Properties().durability(1)));
+    public static final RegistryObject<Item> D20 = ITEMS.register("d20", () -> new DieItem(new Item.Properties().durability(1)));
+    public static final RegistryObject<Item> D12 = ITEMS.register("d12", () -> new DieItem(new Item.Properties().durability(1)));
+    public static final RegistryObject<Item> D10 = ITEMS.register("d10", () -> new DieItem(new Item.Properties().durability(1)));
+    public static final RegistryObject<Item> D8 = ITEMS.register("d8", () -> new DieItem(new Item.Properties().durability(1)));
+    public static final RegistryObject<Item> D6 = ITEMS.register("d6", () -> new DieItem(new Item.Properties().durability(1)));
+    public static final RegistryObject<Item> D4 = ITEMS.register("d4", () -> new DieItem(new Item.Properties().durability(1)));
 
     /* DND Weapons Tab */
-    public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new Item(new Item.Properties().durability(1)));
+    public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger", () -> new DieItem(new Item.Properties().durability(1)));
 
     /* Spells Tab */
     public static final RegistryObject<Item> SPELLBOOK = ITEMS.register("spellbook", () -> new Item(new Item.Properties().durability(1)));
