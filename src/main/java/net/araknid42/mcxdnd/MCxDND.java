@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.araknid42.mcxdnd.component.ModDataComponentTypes;
 import net.araknid42.mcxdnd.item.ModCreativeModeTabs;
 import net.araknid42.mcxdnd.item.ModItems;
+import net.araknid42.mcxdnd.sound.ModSounds;
 import net.araknid42.mcxdnd.util.ModItemProperties;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -41,6 +42,8 @@ public class MCxDND {
         ModItems.register(modEventBus);
 
         ModDataComponentTypes.register(modEventBus);
+
+        ModSounds.register(modEventBus);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);

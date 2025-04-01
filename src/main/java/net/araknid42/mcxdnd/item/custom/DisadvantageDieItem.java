@@ -1,5 +1,6 @@
 package net.araknid42.mcxdnd.item.custom;
 
+import net.araknid42.mcxdnd.sound.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -25,7 +26,7 @@ public class DisadvantageDieItem extends DieItem {
     public static int NUM_SIDES = 20;
     public static int MODIFIER = 0;
     public static SoundEvent END_SOUND = SoundEvents.DRAGON_FIREBALL_EXPLODE;
-    public static SoundEvent ROLL_SOUND = SoundEvents.EXPERIENCE_ORB_PICKUP;
+    public static SoundEvent ROLL_SOUND = ModSounds.DICE_ROLL.get();
 
     /* Custom Functions */
     // Roll Functions
