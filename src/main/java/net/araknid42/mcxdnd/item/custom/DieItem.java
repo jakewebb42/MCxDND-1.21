@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 
 public class DieItem extends BowItem {
 
+
     // Constructor
     public DieItem(Properties pProperties) {
         super(pProperties);
@@ -27,6 +28,7 @@ public class DieItem extends BowItem {
     public static int MODIFIER = 0;
     public static SoundEvent END_SOUND = SoundEvents.DRAGON_FIREBALL_EXPLODE;
     public static SoundEvent ROLL_SOUND = ModSounds.DICE_ROLL.get();
+    public static int TICK_COUNTER = 1;
 
     /* Custom Functions */
     // Set Functions
@@ -107,9 +109,21 @@ public class DieItem extends BowItem {
             minecraft.gui.setTitle(Component.literal(rollString));
             minecraft.gui.setSubtitle(Component.literal(blankString));
 
+            //Tick Counter
+            if (DieItem.TICK_COUNTER < 20){
+                DieItem.TICK_COUNTER += 1;
+            }
+            else if (DieItem.TICK_COUNTER == 20){
+                DieItem.TICK_COUNTER = 1;
+            }
+
             // Output Sound
-            pLevel.playSound(null, playerPos, DieItem.ROLL_SOUND, SoundSource.BLOCKS);
+            if (DieItem.TICK_COUNTER == 2){
+                pLevel.playSound(null, playerPos, DieItem.ROLL_SOUND, SoundSource.BLOCKS);
+            }
+
         }
+
     }
 
     @Override
