@@ -18,8 +18,8 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.mcxdnd.dice"))
                     .displayItems((itemDisplayParameters, output) ->{
                         output.accept(ModItems.D20.get());
-                        output.accept(ModItems.D_ADVANTAGE.get());
-                        output.accept(ModItems.D_DISADVANTAGE.get());
+                        output.accept(ModItems.D20_ADVANTAGE.get());
+                        output.accept(ModItems.D20_DISADVANTAGE.get());
                         output.accept(ModItems.D12.get());
                         output.accept(ModItems.D10.get());
                         output.accept(ModItems.D8.get());

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "mcxdnd:item/d_advantage"
+    "layer0": "mcxdnd:item/d20_advantage"
   }
 }

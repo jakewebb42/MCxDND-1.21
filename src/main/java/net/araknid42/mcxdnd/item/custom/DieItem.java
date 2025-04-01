@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 
 import java.awt.*;
+import java.util.List;
 
 public class DieItem extends BowItem {
 
@@ -164,5 +165,12 @@ public class DieItem extends BowItem {
                 pLevel.playSound(null, playerPos, DieItem.END_SOUND, SoundSource.PLAYERS);
             }
         }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+        //pTooltipComponents.add(Component.translatable("tooltip.mcxdnd.die_item.tooltip"));
+
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }

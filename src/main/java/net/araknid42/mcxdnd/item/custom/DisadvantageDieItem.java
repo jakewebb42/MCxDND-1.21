@@ -15,7 +15,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+
+import java.util.List;
 
 public class DisadvantageDieItem extends DieItem {
 
@@ -85,5 +88,13 @@ public class DisadvantageDieItem extends DieItem {
         }
 
         return criticalString;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+        pTooltipComponents.remove(Component.translatable("tooltip.mcxdnd.die_item.tooltip"));
+        pTooltipComponents.add(Component.translatable("tooltip.mcxdnd.d_disadvantage.tooltip"));
+
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
     }
 }
