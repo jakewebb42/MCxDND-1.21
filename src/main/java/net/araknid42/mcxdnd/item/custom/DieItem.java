@@ -6,6 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -60,9 +61,9 @@ public class DieItem extends BowItem {
     }
 
     // Roll Functions
-    public String rollDieString() {
+    public MutableComponent rollDieMutableComponent(boolean useColor) {
         int roll = (int)((Math.random()*DieItem.NUM_SIDES + 1) + DieItem.MODIFIER);
-        return String.valueOf(roll);
+        return Component.literal(String.valueOf(roll));
     }
     public String determineCriticalString(String rollString, ItemStack pStack) {
         String criticalString = "";
@@ -123,11 +124,11 @@ public class DieItem extends BowItem {
             String blankString = ""; // show blank subtitle no matter what
 
             // Roll
-            String rollString = rollDieString();
+            MutableComponent rollComponent = rollDieMutableComponent(false);
 
             // Output Roll
             minecraft.gui.setTimes(0, 50, 50);
-            minecraft.gui.setTitle(Component.literal(rollString));
+            minecraft.gui.setTitle(rollComponent);
             minecraft.gui.setSubtitle(Component.literal(blankString));
 
             // Output Sound
@@ -152,16 +153,12 @@ public class DieItem extends BowItem {
             // Charge
             if (pullProgress > 0.45F) {
                 // Generate roll and subtitle
-                String rollString = rollDieString();
-                String subtitleString = determineCriticalString(rollString, pStack);
+                MutableComponent rollComponent = rollDieMutableComponent(true);
+                String subtitleString = determineCriticalString(rollComponent.getString(), pStack);
 
                 // Output Roll
-                Component rollComponent1 = Component.literal(rollString).withColor(ChatFormatting.GOLD.getColor());
-                Component rollComponent2 = Component.literal("123").withColor(ChatFormatting.WHITE.getColor());
-
-                minecraft.gui.setTitle(rollComponent1);
-                minecraft.gui.setOverlayMessage(rollComponent2, true);
-                minecraft.gui.setSubtitle(Component.literal(subtitleString));
+                minecraft.gui.setTitle(rollComponent);
+                //minecraft.gui.setSubtitle(Component.literal(subtitleString));
 
                 // Output Sound
                 pLevel.playSound(null, playerPos, DieItem.END_SOUND, SoundSource.PLAYERS);

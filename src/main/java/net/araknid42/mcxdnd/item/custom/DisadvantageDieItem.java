@@ -30,7 +30,7 @@ public class DisadvantageDieItem extends DieItem {
 
     /* Custom Functions */
     // Roll Functions
-    @Override
+    /*@Override
     public String rollDieString() {
         int roll1 = (int)((Math.random()* DisadvantageDieItem.NUM_SIDES + 1) + DisadvantageDieItem.MODIFIER);
         int roll2 = (int)((Math.random()* DisadvantageDieItem.NUM_SIDES + 1) + DisadvantageDieItem.MODIFIER);
@@ -38,7 +38,7 @@ public class DisadvantageDieItem extends DieItem {
         String roll2String = String.valueOf(roll2);
 
         return " " + roll1String + " " + roll2String + " ";
-    }
+    }*/
 
     @Override
     public String determineCriticalString(String rollString, ItemStack pStack) {
