@@ -2,18 +2,23 @@ package net.araknid42.mcxdnd.item.custom;
 
 import net.araknid42.mcxdnd.item.ModItems;
 import net.araknid42.mcxdnd.sound.ModSounds;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.event.RenderTooltipEvent;
+
+import java.awt.*;
 
 public class DieItem extends BowItem {
 
@@ -32,7 +37,7 @@ public class DieItem extends BowItem {
 
     /* Custom Functions */
     // Set Functions
-    private void setNumSides(ItemStack pStack) {
+    public void setNumSides(ItemStack pStack) {
         if (pStack.is(ModItems.D20.get())){
             DieItem.NUM_SIDES = 20;
         }
@@ -55,11 +60,11 @@ public class DieItem extends BowItem {
     }
 
     // Roll Functions
-    private String rollDieString() {
+    public String rollDieString() {
         int roll = (int)((Math.random()*DieItem.NUM_SIDES + 1) + DieItem.MODIFIER);
         return String.valueOf(roll);
     }
-    private String determineCriticalString(String rollString, ItemStack pStack) {
+    public String determineCriticalString(String rollString, ItemStack pStack) {
         String criticalString = "";
         String failureString = "CRITICAL FAILURE";
         String successString = "CRITICAL SUCCESS";
@@ -77,6 +82,22 @@ public class DieItem extends BowItem {
         }
 
         return criticalString;
+    }
+
+    // Output Functions
+    public void playDiceRoll(Level pLevel, BlockPos playerPos) {
+        //Tick Counter
+        if (DieItem.TICK_COUNTER < 20){
+            DieItem.TICK_COUNTER += 1;
+        }
+        else if (DieItem.TICK_COUNTER == 20){
+            DieItem.TICK_COUNTER = 1;
+        }
+
+        // Output Sound
+        if (DieItem.TICK_COUNTER == 2){
+            pLevel.playSound(null, playerPos, DieItem.ROLL_SOUND, SoundSource.PLAYERS);
+        }
     }
 
     /* Use Functions */
@@ -109,18 +130,8 @@ public class DieItem extends BowItem {
             minecraft.gui.setTitle(Component.literal(rollString));
             minecraft.gui.setSubtitle(Component.literal(blankString));
 
-            //Tick Counter
-            if (DieItem.TICK_COUNTER < 20){
-                DieItem.TICK_COUNTER += 1;
-            }
-            else if (DieItem.TICK_COUNTER == 20){
-                DieItem.TICK_COUNTER = 1;
-            }
-
             // Output Sound
-            if (DieItem.TICK_COUNTER == 2){
-                pLevel.playSound(null, playerPos, DieItem.ROLL_SOUND, SoundSource.BLOCKS);
-            }
+            playDiceRoll(pLevel, playerPos);
 
         }
 
@@ -145,11 +156,15 @@ public class DieItem extends BowItem {
                 String subtitleString = determineCriticalString(rollString, pStack);
 
                 // Output Roll
-                minecraft.gui.setTitle(Component.literal(rollString));
+                Component rollComponent1 = Component.literal(rollString).withColor(ChatFormatting.GOLD.getColor());
+                Component rollComponent2 = Component.literal("123").withColor(ChatFormatting.WHITE.getColor());
+
+                minecraft.gui.setTitle(rollComponent1);
+                minecraft.gui.setOverlayMessage(rollComponent2, true);
                 minecraft.gui.setSubtitle(Component.literal(subtitleString));
 
                 // Output Sound
-                pLevel.playSound(null, playerPos, DieItem.END_SOUND, SoundSource.BLOCKS);
+                pLevel.playSound(null, playerPos, DieItem.END_SOUND, SoundSource.PLAYERS);
             }
         }
     }
