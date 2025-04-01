@@ -158,7 +158,7 @@ public class DieItem extends BowItem {
 
                 // Output Roll
                 minecraft.gui.setTitle(rollComponent);
-                //minecraft.gui.setSubtitle(Component.literal(subtitleString));
+                minecraft.gui.setSubtitle(Component.literal(subtitleString));
 
                 // Output Sound
                 pLevel.playSound(null, playerPos, DieItem.END_SOUND, SoundSource.PLAYERS);

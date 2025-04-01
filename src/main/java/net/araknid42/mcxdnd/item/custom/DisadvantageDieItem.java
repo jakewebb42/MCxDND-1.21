@@ -1,9 +1,11 @@
 package net.araknid42.mcxdnd.item.custom;
 
 import net.araknid42.mcxdnd.sound.ModSounds;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -30,15 +32,39 @@ public class DisadvantageDieItem extends DieItem {
 
     /* Custom Functions */
     // Roll Functions
-    /*@Override
-    public String rollDieString() {
-        int roll1 = (int)((Math.random()* DisadvantageDieItem.NUM_SIDES + 1) + DisadvantageDieItem.MODIFIER);
-        int roll2 = (int)((Math.random()* DisadvantageDieItem.NUM_SIDES + 1) + DisadvantageDieItem.MODIFIER);
-        String roll1String = String.valueOf(roll1);
-        String roll2String = String.valueOf(roll2);
+    @Override
+    public MutableComponent rollDieMutableComponent(boolean useColor) {
 
-        return " " + roll1String + " " + roll2String + " ";
-    }*/
+        /* Init */
+        // Init rolls
+        int roll1 = (int)((Math.random()* AdvantageDieItem.NUM_SIDES + 1) + AdvantageDieItem.MODIFIER);
+        int roll2 = (int)((Math.random()* AdvantageDieItem.NUM_SIDES + 1) + AdvantageDieItem.MODIFIER);
+
+        // Init Colors
+        int rollMinColor = ChatFormatting.RED.getColor();
+        int roll1Color = ChatFormatting.WHITE.getColor();
+        int roll2Color = ChatFormatting.WHITE.getColor();
+
+        /* Calculate */
+        // Calc Colors
+        if (useColor) {
+            if (roll1 < roll2) {
+                roll1Color = rollMinColor;
+            } else if (roll2 < roll1) {
+                roll2Color = rollMinColor;
+            }
+        }
+
+        // Calc Strings
+        String roll1String = " " + String.valueOf(roll1) + " ";
+        String roll2String = String.valueOf(roll2) + " ";
+
+        // Calc Components
+        MutableComponent rollComponent1 = Component.literal(roll1String).withColor(roll1Color);
+        MutableComponent rollComponent2 = Component.literal(roll2String).withColor(roll2Color);
+
+        return rollComponent1.append(rollComponent2);
+    }
 
     @Override
     public String determineCriticalString(String rollString, ItemStack pStack) {
