@@ -1,13 +1,9 @@
 package net.araknid42.mcxdnd;
 
 import com.mojang.logging.LogUtils;
-import net.araknid42.mcxdnd.component.ModDataComponentTypes;
 import net.araknid42.mcxdnd.item.ModCreativeModeTabs;
 import net.araknid42.mcxdnd.item.ModItems;
 import net.araknid42.mcxdnd.sound.ModSounds;
-import net.araknid42.mcxdnd.util.ModItemProperties;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -41,8 +37,6 @@ public class MCxDND {
 
         ModItems.register(modEventBus);
 
-        ModDataComponentTypes.register(modEventBus);
-
         ModSounds.register(modEventBus);
 
         // Register the item to a creative tab
@@ -71,7 +65,7 @@ public class MCxDND {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            ModItemProperties.addCustomItemProperties();
+
         }
     }
 }
